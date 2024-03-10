@@ -1,4 +1,6 @@
 import mongodb from 'mongodb';
+// no-unused-vars
+import Collection from 'mongodb/lib/collection';
 import envLoader from './env_loader';
 
 
