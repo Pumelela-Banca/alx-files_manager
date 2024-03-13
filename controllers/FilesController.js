@@ -7,6 +7,7 @@ import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 import { fileQueue } from '../worker';
 
+// FilesController class
 class FilesController {
   static async postUpload(req, res) {
     const token = req.header('X-Token');
@@ -62,7 +63,7 @@ class FilesController {
     folderData.parentId = parentId === '0' ? 0 : ObjectId(parentId);
     return res.status(201).json({ id: newFile.insertedId, localPath, ...folderData });
   }
-
+  // Get file
   static async getShow(req, res) {
     const token = req.header('X-Token');
     if (!token) return res.status(401).json({ error: 'Unauthorized' });

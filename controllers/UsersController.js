@@ -4,6 +4,8 @@ import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 import { userQueue } from '../worker';
 
+
+// UsersController class
 class UsersController {
   static async postNew(req, res) {
     const { email, password } = req.body;
@@ -26,7 +28,7 @@ class UsersController {
     userQueue.add({ userId: result.insertedId });
     return res.status(201).json({ id: result.insertedId, email });
   }
-
+  // Get user
   static async getMe(req, res) {
     const token = req.header('X-Token');
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
