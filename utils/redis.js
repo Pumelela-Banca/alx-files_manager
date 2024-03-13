@@ -1,38 +1,54 @@
-import { promisify } from 'util';
-import { createClient } from 'redis';
-
+import redis from 'redis';
 
 class RedisClient {
-
   constructor() {
-    this.client = createClient();
-    this.isClientConnected = true;
-    this.client.on('error', (err) => {
-      console.error('Redis client failed to connect:', err.message || err.toString());
-      this.isClientConnected = false;
-    });
-    this.client.on('connect', () => {
-      this.isClientConnected = true;
+    this.client = redis.createClient();
+    this.client.on('error', (error) => {
+      console.error(error);
     });
   }
 
   isAlive() {
-    return this.isClientConnected;
+    return this.client.connected;
   }
 
   async get(key) {
-    return promisify(this.client.GET).bind(this.client)(key);
+    return new Promise((resolve, reject) => {
+      this.client.get(key, (error, reply) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(reply);
+        }
+      });
+    });
   }
 
   async set(key, value, duration) {
-    await promisify(this.client.SETEX)
-      .bind(this.client)(key, duration, value);
+    return new Promise((resolve, reject) => {
+      this.client.setex(key, duration, value, (error, reply) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(reply);
+        }
+      });
+    });
   }
 
   async del(key) {
-    await promisify(this.client.DEL).bind(this.client)(key);
+    // eslint-disable-next-line no-unused-vars
+    return new Promise((resolve, _reject) => {
+      this.client.del(key, (error) => {
+        if (error) {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    });
   }
 }
 
-export const redisClient = new RedisClient();
+const redisClient = new RedisClient();
 export default redisClient;
