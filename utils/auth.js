@@ -30,7 +30,6 @@ export const getUserFromAuthorization = async (req) => {
   return user;
 };
 
-
 export const getUserFromXToken = async (req) => {
   const token = req.headers['x-token'];
 
