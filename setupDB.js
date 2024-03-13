@@ -17,8 +17,10 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function (err, client) {
 
   const db = client.db(dbName);
 
+  // Check 'users' collection
   checkAndInsert(db, 'users', 4, { name: 'User' });
 
+  // Check 'files' collection
   checkAndInsert(db, 'files', 30, { name: 'File' });
 });
 
