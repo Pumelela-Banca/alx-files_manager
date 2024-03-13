@@ -5,11 +5,9 @@ import { promisify } from 'util';
 import mimeMessage from 'mime-message';
 import { gmail_v1 as gmailV1, google } from 'googleapis';
 
-// If modifying these scopes, delete token.json.
+
 const SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
-// The file token.json stores the user's access and refresh tokens, and is
-// created automatically when the authorization flow completes for the first
-// time.
+
 const TOKEN_PATH = 'token.json';
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
@@ -54,7 +52,7 @@ async function authorize(credentials, callback) {
     redirectURIs[0],
   );
   console.log('Client authorization beginning');
-  // Check if we have previously stored a token.
+  
   await readFileAsync(TOKEN_PATH)
     .then((token) => {
       oAuth2Client.setCredentials(JSON.parse(token));

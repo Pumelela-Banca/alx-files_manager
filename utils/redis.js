@@ -37,7 +37,7 @@ class RedisClient {
   }
 
   async del(key) {
-    // eslint-disable-next-line no-unused-vars
+
     return new Promise((resolve, _reject) => {
       this.client.del(key, (error) => {
         if (error) {
