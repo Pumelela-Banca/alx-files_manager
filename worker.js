@@ -7,6 +7,7 @@ import dbClient from './utils/db';
 const fileQueue = new Queue('fileQueue');
 const userQueue = new Queue('userQueue');
 
+// Process fileQueue
 fileQueue.process(async (job) => {
   try {
     const { fileId, userId } = job.data;
@@ -25,11 +26,12 @@ fileQueue.process(async (job) => {
     console.error('An error occurred:', error);
   }
 });
-
+// Process userQueue
 userQueue.process(async (job) => {
   try {
     const { userId } = job.data;
     if (!userId) throw new Error('Missing userId');
+    // userId already objectid
     const user = await dbClient.dbClient.collection('users').findOne({ _id: ObjectId(userId) });
     if (!user) throw new Error('User not found');
 
